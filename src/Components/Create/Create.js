@@ -13,23 +13,29 @@ const Create = () => {
   const [price, setPrice] = useState('');
   const [image, setImage] = useState('');
   const date = new Date();
+  const [error, setError] = useState('');
 
   const handleSubmit = () => {
-    firebase.storage().ref(`/image/${image.name}`)
-    .put(image).then(({ref}) => {
-      ref.getDownloadURL().then((url) => {
-        console.log(url);
-        firebase.firestore().collection('products').add({
-          name,
-          category,
-          price,
-          url,
-          userId:user.uid,
-          createdAt:date.toDateString()
+    if(name && category && price && image) {
+
+      firebase.storage().ref(`/image/${image.name}`)
+      .put(image).then(({ref}) => {
+        ref.getDownloadURL().then((url) => {
+          console.log(url);
+          firebase.firestore().collection('products').add({
+            name,
+            category,
+            price,
+            url,
+            userId:user.uid,
+            createdAt:date.toDateString()
+          })
+          navigate('/')
         })
-        navigate('/')
       })
-    })
+    }else{
+      setError("ALL FIELDS ARE REQUIRED")
+    }
   }
   return (
     <Fragment>
@@ -84,6 +90,7 @@ const Create = () => {
             <input onChange={(e) => setImage(e.target.files[0])}
              type="file" />
             <br />
+            <div className='error'>{error}</div>
             <button onClick={handleSubmit} className="uploadBtn">upload and Submit</button>
       
         </div>

@@ -31,6 +31,7 @@ function View() {
     //     setUserDetalis(doc.data())
     //   });
     // })
+    
      // eslint-disable-next-line
   },[])
 

@@ -3,30 +3,36 @@ import { FirebaseContext } from '../../Store/Context';
 import Logo from '../../olx-logo.png';
 import './Login.css';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import {useNavigate} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const {firebase} = useContext(FirebaseContext)
   const navigate = useNavigate()
-  
+  const [error, setError] = useState('');
+
   const handleLogin = (e) => {
     e.preventDefault();
-    const auth = getAuth();
-    signInWithEmailAndPassword(auth, email, password)
-    .then(() => {
-      navigate('/')
-    // Signed in 
-    //const user = userCredential.user;
-    // ...
-  })
-  .catch((error) => {
-    alert(error.message);
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    console.log(errorCode, errorMessage);
-  });
+    if(email && password){
+
+      const auth = getAuth();
+      signInWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        navigate('/')
+      // Signed in 
+      //const user = userCredential.user;
+      // ...
+    })
+    .catch((error) => {
+      alert(error.message);
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(errorCode, errorMessage);
+    });
+    }else{
+      setError("ALL FIELDS ARE REQUIRED")
+    }
 
   //   const auth = getAuth();
   //   createUserWithEmailAndPassword(auth,email, password)
@@ -80,9 +86,10 @@ function Login() {
           />
           <br />
           <br />
+          <div className='error'>{error}</div>
           <button>Login</button>
         </form>
-        <a>Signup</a>
+        <Link to="/signup">Signup</Link>
       </div>
     </div>
   );

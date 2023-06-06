@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {useNavigate} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import './Header.css';
 import OlxLogo from '../../assets/OlxLogo';
 import Search from '../../assets/Search';
@@ -39,7 +39,7 @@ function Header() {
           <Arrow></Arrow>
         </div>
         <div className="loginPage">
-          <span>{user ? ` Welcome ${user.displayName}` : 'Login'}</span>
+          <span>{user ? ` Welcome ${user.displayName}` : <Link to="/login">Login</Link>}</span>
           <hr />
         </div>
           {user && <span onClick={() => {
@@ -52,7 +52,7 @@ function Header() {
           <SellButton></SellButton>
           <div className="sellMenuContent">
             <SellButtonPlus></SellButtonPlus>
-            <span>SELL</span>
+            <span><Link to="/create">SELL</Link></span>
           </div>
         </div>
       </div>

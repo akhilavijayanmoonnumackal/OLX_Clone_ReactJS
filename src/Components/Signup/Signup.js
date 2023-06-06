@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import Logo from '../../olx-logo.png';
 import { FirebaseContext } from '../../Store/Context';
-import {useNavigate} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import './Signup.css';
 import {getAuth,createUserWithEmailAndPassword, updateProfile} from 'firebase/auth';
 
@@ -12,30 +12,35 @@ export default function Signup() {
   const [phone,setPhone] = useState('');
   const [password,setPassword] = useState('');
   const {firebase} = useContext(FirebaseContext)
+  const [error, setError] = useState('')
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const auth = getAuth();
-    createUserWithEmailAndPassword(auth,email, password)
-  .then((userCredential) => {
-    let user = userCredential.user;
-    updateProfile(auth.currentUser,{displayName: username})
-    .then(() => {
-      firebase.firestore().collection('users').add({
-        id:user.uid,
-        username:username,
-        phone:phone
-      }).then(() => {
-        navigate("/login")
+    if(username && email && phone && password) {
+      const auth = getAuth();
+      createUserWithEmailAndPassword(auth,email, password)
+      .then((userCredential) => {
+      let user = userCredential.user;
+      updateProfile(auth.currentUser,{displayName: username})
+      .then(() => {
+        firebase.firestore().collection('users').add({
+          id:user.uid,
+          username:username,
+          phone:phone
+        }).then(() => {
+          navigate("/login")
+        })
       })
     })
-  })
-  .catch((error) => {
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    console.log(errorCode, errorMessage);
-  });
-  }
+    .catch((error) => {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      console.log(errorCode, errorMessage);
+    });
+    }else{
+      setError("ALL FIELDS ARE REQUIRED")
+    }
+    }
   return (
     <div>
       <div className="signupParentDiv">
@@ -90,9 +95,11 @@ export default function Signup() {
           />
           <br />
           <br />
+          <div className='error'>{error}</div>
           <button>Signup</button>
         </form>
-        <a>Login</a>
+        <Link to="/login">Login</Link>
+        {/* <a>Login</a> */}
       </div>
     </div>
   );
