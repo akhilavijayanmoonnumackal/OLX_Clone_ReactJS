@@ -31,7 +31,7 @@ function View() {
     //     setUserDetalis(doc.data())
     //   });
     // })
-    
+
      // eslint-disable-next-line
   },[])
 
@@ -46,8 +46,8 @@ function View() {
       <div className="rightSection">
         <div className="productDetails">
           <p>&#x20B9; {postDetails && postDetails?.price} </p>
-          <span>YAMAHA R15V3</span>
-          <p>Two Wheeler</p>
+          <span>{postDetails.name}</span>
+          <p>{postDetails.category}</p>
           <span>Tue May 04 2023</span>
         </div>
         {userDetails && <div className="contactDetails">
