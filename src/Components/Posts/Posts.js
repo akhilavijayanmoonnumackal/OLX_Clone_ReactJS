@@ -3,10 +3,15 @@ import React, {useState, useEffect, useContext} from 'react';
 import Heart from '../../assets/Heart';
 import './Post.css';
 import { FirebaseContext } from '../../Store/Context';
+import { PostContext } from '../../Store/PostContext';
+import {useNavigate} from 'react-router-dom';
 
 function Posts() {
   const {firebase} = useContext(FirebaseContext)
   const [products, setProducts] = useState([])
+  const { postDetails, setPostDeatils} = useContext(PostContext)
+  console.log(postDetails)
+  const navigate = useNavigate()
 
   useEffect(() => {
     firebase.firestore().collection('products').get()
@@ -19,6 +24,7 @@ function Posts() {
       })
       setProducts(allPost)
     })
+     // eslint-disable-next-line
   },[])
 
   return (
@@ -33,6 +39,10 @@ function Posts() {
 
           return <div
             className="card"
+            onClick={() => {
+              setPostDeatils(product)
+              navigate('/view')
+            }}
           >
             <div className="favorite">
               <Heart></Heart>

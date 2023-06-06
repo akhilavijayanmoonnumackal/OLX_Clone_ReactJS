@@ -10,6 +10,7 @@ function Login() {
   const [password, setPassword] = useState('');
   const {firebase} = useContext(FirebaseContext)
   const navigate = useNavigate()
+  
   const handleLogin = (e) => {
     e.preventDefault();
     const auth = getAuth();

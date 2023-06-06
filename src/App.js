@@ -3,9 +3,11 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Signup from './Pages/Signup';
 import Login from './Pages/Login';
 import Create from './Pages/Create';
+import View from './Pages/ViewPost';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import './App.css';
 import { AuthContext, FirebaseContext } from './Store/Context';
+import Post from './Store/PostContext';
 
 /**
  * ?  =====Import Components=====
@@ -32,20 +34,22 @@ function App() {
   })
   return (
     <div>
+      <Post>
       <Router>
         <Routes>
           <Route exact path = '/' element={<Home/>}>
-            {/* <Home /> */}
           </Route>
           <Route path = '/signup' element={<Signup/>}>
-            {/* <Signup /> */}
           </Route>
           <Route path = '/login' element={<Login/>}>
           </Route>
           <Route path = '/create' element={<Create/>}>
           </Route>
+          <Route path = '/view' element={<View/>}>
+          </Route>
         </Routes>
       </Router>
+      </Post>
     </div>
   );
 }
